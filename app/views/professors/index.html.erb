@@ -1,0 +1,42 @@
+<% content_for :title, 'Professor List' %>
+
+<% if notice %>
+  <div id="notice" class="alert alert-success">
+    <%= notice %>   
+  </div>
+<% end %>
+
+<% if flash[:error] %>
+<div class="alert alert-danger">
+    <p><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"> </span> <%= flash[:error] %> </p>
+</div>
+<% end %>
+
+<h4>Professors</h4>
+
+<%= link_to 'Create New Professor', new_professor_path, :class=>'btn btn-success pull-right'%>
+<div class="clearfix"></div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th colspan="3">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @professors.each do |professor| %>
+      <tr>
+        <td><%= professor.name %></td>
+        <td>
+          <%= link_to '', professor, :class=>'glyphicon glyphicon-search' %>
+          <%= link_to '', edit_professor_path(professor), :class=>'glyphicon glyphicon-pencil' %>
+          <%= link_to '', professor, method: :delete, data: { confirm: 'Are you sure?' }, :class=>'glyphicon glyphicon-remove' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+

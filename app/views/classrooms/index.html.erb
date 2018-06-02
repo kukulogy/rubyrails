@@ -1,0 +1,33 @@
+<% content_for :title, 'Class List' %>
+
+<% if notice %>
+	<div id="notice" class="alert alert-success">
+		<%= notice %>		
+	</div>
+<% end %>
+
+<% if flash[:error] %>
+<div class="alert alert-danger">
+    <p><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"> </span> <%= flash[:error] %> </p>
+</div>
+<% end %>
+
+<h4>Class List</h4>
+<%= link_to 'Create New Class',  new_classroom_path, :class=>'btn btn-success pull-right'%>
+<div class="clearfix"></div> <br>
+<table class='table'>
+	<tr>
+		<th>Title</th>
+		<th>Details</th>
+		<th>Actions</th>
+	</tr>
+	<% @classrooms.each do |classroom| %>
+	    <tr>
+	      <td><%= classroom.title %></td>
+	      <td><%= classroom.text %></td>
+	      <td><%= link_to '', classroom_path(classroom), :class=>'glyphicon glyphicon-search' %>
+	      <%= link_to '', edit_classroom_path(classroom), :class=>'glyphicon glyphicon-pencil' %>
+	      <%= link_to '', classroom, method: :delete, data: { confirm: 'Are you sure?' }, :class=>'glyphicon glyphicon-remove'%></td>
+	    </tr>
+	<% end %>
+</table>

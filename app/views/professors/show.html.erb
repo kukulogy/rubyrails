@@ -1,0 +1,45 @@
+<% content_for :title, @professor.name %>
+<% if notice %>
+<div id="notice" class="alert alert-success">
+	<%= notice %>
+</div>
+<% end %>
+
+<p>
+	<h4><%= @professor.name %></h4>
+</p>
+<h2>Class List:</h2>
+<table class="table">
+	<tr>
+		<th>Class Name</th>
+		<th>Action</th>
+	</tr>
+	<% @professor.record.each do |record| %>
+	<tr>
+		<td><%= record.classroom.title %></td>
+		<td><%= link_to '', record, method: :delete, data: { confirm: 'Are you sure?' }, :class=>'glyphicon glyphicon-remove'%></td>
+	</tr>
+	<% end %>
+</table>
+<h3>Add a review:</h3>
+<%= form_with(model: [ @professor, @professor.reviews.build ], local: true) do |form| %>
+<p>
+	<%= form.text_area :review, :class=>'form-control' %>
+</p>
+<p>
+	<%= form.submit 'Submit', :class=>'btn btn-success' %>
+</p>
+<% end %>
+<br>
+<h2>Reviews</h2>
+<% @professor.reviews.each do |review| %>
+<% if review.review %>
+<p>
+    <span class="glyphicon glyphicon-user"></span>
+    <strong>Anonymous</strong>
+    <%= review.created_at.strftime("%B %e %Y") %>
+</p>
+<p><%= review.review %></p>
+<br>
+<% end %>
+<% end %>

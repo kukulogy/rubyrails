@@ -1,0 +1,44 @@
+<div class="col-md-5">
+  <%= form_with model: @classroom, local: true do |form| %>
+   
+    <% if @classroom.errors.any? %>
+      <div class="alert alert-danger">
+        <p><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <%= pluralize(@classroom.errors.count, "error") %> prohibited
+          this classroom from being saved:
+        </p>
+        <ul>
+          <% @classroom.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+   
+    <%= form.label :title %><br>
+    <%= form.text_field :title, :class=>'form-control'%>
+    <br>     
+    <%= form.label :professor %>
+    <br>
+
+    <%= form.collection_select :professor_id, @professors, :id, :name, {prompt: false}, { class: "form-control", multiple: "multiple"} %>
+    
+    <br>
+    <br>
+    <%= form.label :text %><br>
+    <%= form.text_area :text, :class=>'form-control', rows: "10" %>
+   <br>
+    <div class="inline-group"><%= form.submit 'Submit', :class=>'btn btn-success' %>
+        <%= link_to 'Back', classrooms_path, :class=>'btn btn-success' %></div>
+   
+  <% end %>
+</div>
+
+<script>
+  $(function(){
+    $('#classroom_professor_id').select2();
+    <% if !@classroom.record.ids.empty? %>
+    $('#classroom_professor_id').val(<%= @records.pluck(:professor_id) %>).change();
+    <% end %>
+  });
+</script>

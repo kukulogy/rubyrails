@@ -1,0 +1,25 @@
+<div class="col-md-5">
+  <%= form_with(model: professor, local: true) do |form| %>
+    <% if professor.errors.any? %>
+    <div class="alert alert-danger" role="alert">
+        
+        <p><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <%= pluralize(professor.errors.count, "error") %> prohibited this professor from being saved:</p>
+  
+        <ul>
+        <% professor.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+  
+    <%= form.label :name %>
+    <%= form.text_field :name , :class=>'form-control' %>
+  
+    <br>
+    <div class="inline-group">
+      <%= form.submit 'Submit', :class=>'btn btn-success'  %>
+      <%= link_to 'Back', professors_path, :class=>'btn btn-success' %>
+    </div>
+  <% end %>
+</div>

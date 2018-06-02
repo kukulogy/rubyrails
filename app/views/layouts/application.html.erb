@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= yield(:title) %></title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row">
+         <nav class="navbar navbar-default">
+           <div class="container-fluid">
+             <div class="navbar-header">
+               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                 <span class="sr-only">Toggle navigation</span>
+                 <span class="icon-bar"></span>
+                 <span class="icon-bar"></span>
+                 <span class="icon-bar"></span>
+               </button>
+               <a class="navbar-brand" href="<%= root_path %>">Class</a>
+             </div>
+             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+               <ul class="nav navbar-nav navbar-right">
+                 <li class="<%= current_class?(classrooms_path)  %>"><%= link_to "Class", classrooms_path, :class => current_class?(classrooms_path)  %></li>
+                 <li class="<%= current_class?(professors_path)  %>"><%= link_to "Professors", professors_path %></li>
+               </ul>
+                 </li>
+               </ul>
+             </div>
+           </div>
+         </nav>          
+         <%= yield %>        
+      </div>
+    </div>
+  </body>
+</html>

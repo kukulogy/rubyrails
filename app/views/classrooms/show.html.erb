@@ -1,0 +1,79 @@
+<% content_for :title, @classroom.title %>
+
+<% if notice %>
+<div id="notice" class="alert alert-success">
+    <%= notice %>
+</div>
+<% end %>
+<% if flash[:error] %>
+<div class="alert alert-danger">
+    <p><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"> </span> <%= flash[:error] %> </p>
+</div>
+<% end %>
+<h1><%= @classroom.title %></h1>
+<p><%= @classroom.text %></p>
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+<% if @classroom.record.count > 0 %>
+<% @classroom.record.each do |record| %>
+<div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingOne">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#<%= record.id %>" aria-expanded="true" aria-controls="collapseOne">
+            <h4 class="panel-title">
+            <%= record.professor.name %>
+            <p class="pull-right"><%= link_to '', record, method: :delete, data: { confirm: 'Are you sure?' }, :class=>'glyphicon glyphicon-remove'%></p>
+            </h4>
+            <span class="clearfix"></span>
+        </a>
+        <%= 
+            @avgRate =  @classroom.rates.where(professor_id: record.professor.id ).average(:rating)
+            select_tag "", options_for_select((1..5).map { |i| ["#{i}", i] }, @avgRate.to_i), class: 'form-control readonly-star'  %>
+
+    </div>
+    <div id="<%= record.id %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+        <div class="panel-body">
+            <% @classroom.rates.where(professor_id: record.professor.id ).each do |rates| %>
+            <p>
+                <span class="glyphicon glyphicon-user"></span>
+                <strong>Anonymous</strong>
+                <%= rates.created_at.strftime("%B %e %Y") %>
+            </p>
+            <%= select_tag "", options_for_select((1..5).map { |i| ["#{i}", i] }, rates.rating ), class: 'form-control readonly-star'  %>
+            <p><%= rates.review %></p>
+            <br>
+            <% end %>
+            <h3>Add a review:</h3>
+            <%= form_with(model: [ @classroom, @classroom.rates.build ], local: true) do |form| %>
+            <%= hidden_field_tag(:professor_id, record.professor.id ) %>
+
+            <%= form.select(:rating, options_for_select(1..5, 1) ,  {:prompt=>false}, {required: 'true', autofocus: 'true', class: 'rate_rating'})  %>
+     
+            <p>
+                <%= form.text_area :review, :class=>'form-control' %>
+            </p>
+            <p>
+                <%= form.submit 'Submit', :class=>'btn btn-success' %>
+            </p>
+            <% end %>
+        </div>
+    </div>
+</div>
+<% end %>
+</div>
+<% else %>
+<h4>Notice:</h4>
+<p>There is no assign professor to this class yet.</p>
+<% end %>
+<script type="text/javascript">
+$(function() {
+    $('.rate_rating').barrating({
+        initialRating: 1,
+        theme: 'bootstrap-stars'
+    });
+    $('.readonly-star').barrating({
+        initialRating: 0,
+        theme: 'bootstrap-stars',
+        readonly: 'false',
+    });
+});
+</script>
