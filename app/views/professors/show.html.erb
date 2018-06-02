@@ -6,7 +6,14 @@
 <% end %>
 
 <p>
-	<h4><%= @professor.name %></h4>
+	<h4>
+		<%= @professor.name %>
+		<%=
+					@overallAvg =  @professor.rates.average(:rating)
+					select_tag "", options_for_select((1..5).map { |i| ["#{i}", i] }, @overallAvg.to_i), class: 'form-control readonly-star'  
+		%>
+
+	</h4>
 </p>
 <h2>Class List:</h2>
 <table class="table">
@@ -17,6 +24,11 @@
 	<% @professor.record.each do |record| %>
 	<tr>
 		<td><%= record.classroom.title %></td>
+		<td>            
+			<%= 
+			@avgRate =  @professor.rates.where(classroom_id: record.classroom.id ).average(:rating)
+			select_tag "", options_for_select((1..5).map { |i| ["#{i}", i] }, @avgRate.to_i), class: 'form-control readonly-star'  %>
+		</td>
 		<td><%= link_to '', record, method: :delete, data: { confirm: 'Are you sure?' }, :class=>'glyphicon glyphicon-remove'%></td>
 	</tr>
 	<% end %>
@@ -33,13 +45,22 @@
 <br>
 <h2>Reviews</h2>
 <% @professor.reviews.each do |review| %>
-<% if review.review %>
-<p>
-    <span class="glyphicon glyphicon-user"></span>
-    <strong>Anonymous</strong>
-    <%= review.created_at.strftime("%B %e %Y") %>
-</p>
-<p><%= review.review %></p>
-<br>
+	<% if review.review %>
+	<p>
+	    <span class="glyphicon glyphicon-user"></span>
+	    <strong>Anonymous</strong>
+	    <%= review.created_at.strftime("%B %e %Y") %>
+	</p>
+	<p><%= review.review %></p>
+	<br>
+	<% end %>
 <% end %>
-<% end %>
+<script type="text/javascript">
+$(function() {
+    $('.readonly-star').barrating({
+        initialRating: 0,
+        theme: 'bootstrap-stars',
+        readonly: 'false',
+    });
+});
+</script>

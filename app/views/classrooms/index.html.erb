@@ -23,7 +23,7 @@
 	</tr>
 	<% @classrooms.each do |classroom| %>
 	    <tr>
-	      <td><%= classroom.title %></td>
+	      <td><%= link_to classroom.title, classroom_path(classroom)%></td>
 	      <td><%= classroom.text %></td>
 	      <td><%= link_to '', classroom_path(classroom), :class=>'glyphicon glyphicon-search' %>
 	      <%= link_to '', edit_classroom_path(classroom), :class=>'glyphicon glyphicon-pencil' %>

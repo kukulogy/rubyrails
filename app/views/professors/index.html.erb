@@ -27,7 +27,7 @@
   <tbody>
     <% @professors.each do |professor| %>
       <tr>
-        <td><%= professor.name %></td>
+        <td><%= link_to professor.name, professor %> </td>
         <td>
           <%= link_to '', professor, :class=>'glyphicon glyphicon-search' %>
           <%= link_to '', edit_professor_path(professor), :class=>'glyphicon glyphicon-pencil' %>
