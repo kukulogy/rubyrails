@@ -1,4 +1,4 @@
-###### Ruby on Rails Demo
+## Ruby on Rails Demo
 To use my ruby on rails demo:
 
 First you must install postgres database and then run:
